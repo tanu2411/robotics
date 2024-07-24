@@ -1,0 +1,18 @@
+open proteus app
+Step 1: Place the following component in TinkerCard.
+Compontes:
+a. PIR Sensor
+b. Resistor
+c. Piezo
+d. Arduino Uno R3
+e. LED RGB
+Step 2:Type the following code int pirsensor = 0; void setup()
+{
+pinMode(2, INPUT); pinMode(12,
+OUTPUT); pinMode(13, OUTPUT);
+} void loop() { pirsensor = digitalRead(2); if (pirsensor == HIGH)
+{
+digitalWrite(13,HIGH); tone(12,500,500);
+}
+digitalWrite(13,LOW)
+}
