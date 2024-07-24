@@ -6,7 +6,8 @@ b. Resistor
 c. Piezo
 d. Arduino Uno R3
 e. LED RGB
-Step 2:Type the following code int pirsensor = 0; void setup()
+Step 2:Type the following code 
+int pirsensor = 0; void setup()
 {
 pinMode(2, INPUT); pinMode(12,
 OUTPUT); pinMode(13, OUTPUT);
