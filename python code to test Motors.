@@ -1,0 +1,35 @@
+create new project on proteus app
+name as motors and then click on next
+Select “create a schematic from the selected template”.
+Select “Do not create a PCB layout”
+Select “Create firmware project”. and create firmware project in proteus and select Raspberry pi Family.
+Click on Finish.
+Go to the liabrary>pick devices>L293D
+Select MOTOR
+Edit terminal label as GPIO4
+Select BUTTON
+Rotate button in clockwise
+Edit terminal label as GPIO18
+
+Type code in proteus source code page
+
+import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+button = 12
+DC_motor_a = 7
+DC_motor_b = 11
+GPIO.setup(DC_motor_a, GPIO.OUT)
+GPIO.setup(DC_motor_b, GPIO.OUT)
+GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+while True:
+if GPIO.input(button) == GPIO.LOW:
+GPIO.output(DC_motor_a, GPIO.HIGH)
+GPIO.output(DC_motor_b, GPIO.LOW)
+time.sleep(0.1)
+else:
+GPIO.output(DC_motor_a, GPIO.LOW)
+GPIO.output(DC_motor_b, GPIO.HIGH)
+time.sleep(0.1)
+Start Simulation.
