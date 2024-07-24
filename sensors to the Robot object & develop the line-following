@@ -1,32 +1,94 @@
 open proteus app
-Step 1: Download the following libraries
-a. L298 Motor Driver Library for Proteus
-b. Arduino UNO Library for Proteus V2.0
-c. Infrared Sensor Library for Proteus
-Step 2: Extract this files and pest it in Proteus libraries folder and restart the Proteus .
-Step 3: Download the Proteus IDE and type the following code after that save it and Export Complied
-Library
-Step 4: Upload this HEX file in Arduino
-code:
-void setup()
-{
-pinMode(2,INPUT); pinMode(3,INPUT); pinMode(10,OUTPUT); pinMode(11,OUTPUT);
-pinMode(12,OUTPUT); pinMode(13,OUTPUT);
+Arduino
+Button
+Zumo robot
+Proteus 8.13 simulator
+Procedure:
+
+Step 1: Goto new project and select new project
+
+Step 2 : Change the name of the project and save As Linefollower.psdprj than save it and
+export Complied Library.
+Step 3: Upload this HEX file in Arduino
+
+
+
+
+Source code:
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+#include <core.h> // Required by cpu
+#include <cpu.h>
+#include <TimerOne.h>
+#include <L3G.h> // Required by Z1:DRIVE
+#include <LSM303.h> // Required by Z1:DRIVE
+#include <Wire.h> // Required by Z1:DRIVE
+#include <Servo.h> // Required by Z1:DRIVE
+#include <Zumo.h>
+
+
+#pragma GCC pop_options
+// Peripheral Constructors
+CPU &cpu = Cpu;
+TimerOne &timer1 = Timer1;
+DRIVE Z1_DRIVE = DRIVE (8, 10, 7, 9);
+LINESENSOR Z1_LINESENSOR = LINESENSOR (4, A3, 11, A0, A2, 5, 2);
+COMPASS Z1_COMPASS = COMPASS ();
+GYRO Z1_GYRO = GYRO ();
+void peripheral_setup () { Z1_DRIVE.begin
+();
+Z1_LINESENSOR.begin ();
+Z1_COMPASS.begin ();
+Z1_GYRO.begin ();
 }
-void loop(){
-int v=digitalRead(2); int
-s=digitalRead(3);
-if(v==1 and s==1){
-digitalWrite(13,1); digitalWrite(12,0); digitalWrite(11,1); digitalWrite(10,0);
+void peripheral_loop() {
 }
-if(v==1 and s==0){
-digitalWrite(13,0); digitalWrite(12,1);
-digitalWrite(11,0); digitalWrite(10,1); }
-if(v==0 and s==1){
-digitalWrite(13,1); digitalWrite(12,0); digitalWrite(11,0); digitalWrite(10,1);
+//---CONFIG_END--- //
+Flowchart Variables long
+var_linePosition; long
+var_error; long
+var_lastError; long
+var_speedDifference; long
+var_leftSpeed; long
+var_rightSpeed; long
+var_maxSpeed; float
+var_magX; float
+var_magY;
+float var_magZ;
+// Flowchart Routines void
+chart_SETUP() {
+var_lastError=0,var_maxSpeed=255;
 }
-if(v==0 and s==0){
-digitalWrite(13,0); digitalWrite(12,1);
-digitalWrite(11,0); digitalWrite(10,1);
+void chart_LOOP() {
+var_linePosition=Z1_LINESENSOR.readLinePos();
+var_error=var_linePosition-2500;
+var_speedDifference=var_error/4+6*(var_error-var_lastError); var_lastError=var_error;
+var_leftSpeed=var_maxSpeed+var_speedDifference,var_rightSpeed=var_maxSpeedvar_speedDi
+fference; chart_boundSpeeds();
+Z1_DRIVE.drive(1,1,var_leftSpeed);
+Z1_DRIVE.drive(2,1,var_rightSpeed);
+}
+void chart_boundSpeeds() { if(var_leftSpeed<0) {
+var_leftSpeed=0;
+} else {
+if(var_rightSpeed<0) {
+var_rightSpeed=0;
+} else {
+if(var_leftSpeed>var_maxSpeed) {
+var_leftSpeed=var_maxSpeed;
+} else {
+if(var_rightSpeed>var_maxSpeed) {
+var_rightSpeed=var_maxSpeed;
+}
+
+
+
+
+
 }
 }
+}
+}
+// Entry Points and Interrupt Handlers void setup () {
+peripheral_setup(); chart_SETUP(); } void loop () {
+peripheral_loop(); chart_LOOP(); }
