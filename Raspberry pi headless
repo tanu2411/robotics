@@ -1,0 +1,15 @@
+Making Raspberry pi headless, and reaching it from the network using wifi and SSH.
+STEP I : Download raspberry pi imager for windows. And connect sd card to laptop.
+STEP II : Select operating system (raspberry pi OS 32-bit)
+STEP III : Select Storage.
+STEP IV : Click on Setting Icon . and set hostname. Click to enable SSH.
+STEP V : Click to configure wireless LAN. And select country.
+STEP VI : Click to save.
+STEP VII : Click on write.
+STEP VIII : Click on yes.
+STEP IX : Verifying raspberry pi .
+STEP X : Click on continue .
+Step XI : check the connection in your mobile hotspot of raspberrypi
+STEP X: On cmd promt execute these command :
+1) ping raspberrypi
+2) ssh admin@raspberrypi
