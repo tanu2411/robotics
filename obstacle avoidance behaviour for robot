@@ -1,0 +1,164 @@
+Arduino uno
+Zumo robot
+Description of Zumo robot:
+The Zumo robot for Arduino is an Arduino-controllable tracked robot platform. It includes two micro metal gearmotors coupled to a pair of silicone tracks, a stainless-steel bulldozer-
+style blade, an array of six infrared reflectance sensors for line following or edge detection, abuzzer for simple sounds and music, a 3-axis accelerometer, magnetometer, and gyro for
+detecting impacts and tracking orientation. The zumo is a more advanced turtle than the Funduino and can perform far better at line following and maze escape challenges but it
+does not have ultrasonic range finder and therefore is not as well suited to obstacle avoidance challenges.
+To create and apply an environment for simulation
+1) Draw the required route / obstacles in the graphics package of your choice. Remember
+that the scale is 1 pixel to 1 mm so drawing a 5-pixel wide line will equate to 5mm in the
+real world. Width of the line being followed can affect the algorithm (e.g., if all the sensors
+are never over the line) so it's important to give this some thought.
+
+2) Save the graphic as a PNG file into the same directory as your Proteus project.
+
+3) Edit the turtle component on your schematic and specify the graphic you have just saved
+as the obstacle map.
+
+Source Code:
+//---CONFIG_BEGIN---
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+#include <core.h> // Required by cpu
+#include <cpu.h>
+#include <TimerOne.h>
+#include <Servo.h> // Required by T1:DRIVE
+#include <Turtle.h>
+#pragma GCC pop_options
+// Peripheral Constructors
+CPU &cpu = Cpu;
+TimerOne &timer1 = Timer1;
+TurtleDrive T1_DRIVE = TurtleDrive (2, 4, 3, 6, 7, 5);
+TurtleSonarHead T1_SH = TurtleSonarHead (8, 9, 10);
+TurtleLineHunter T1_LH = TurtleLineHunter (11, 12, A0);
+void peripheral_setup () {
+T1_DRIVE.begin ();
+T1_SH.begin ();
+T1_LH.begin ();
+}
+void peripheral_loop() {
+}
+//---CONFIG_END---
+// Flowchart Variables
+long var_speed; long
+var_dir; long
+var_count; long
+var_range; long
+var_fast; long
+var_slow; long
+var_tstart;
+long var_tstop;
+// Flowchart Routines void
+chart_SETUP() {
+var_speed=180,var_range=10,var_dir=0;
+T1_SH.setAngle(0);
+T1_SH.setRange(25);
+T1_DRIVE.forwards(var_speed);
+}
+void chart_LOOP() {
+if(!(T1_LH(0,0,0))) {
+if(T1_LH(1,1,1)) {
+chart_Correct(); }
+else {
+if(T1_LH(0,1,1)) {
+T1_DRIVE.drive(1,1,5*var_speed/4);
+T1_DRIVE.drive(2,1,var_speed/2);
+var_dir=10;
+chart_Avoid(); }
+else {
+if(T1_LH(0,0,1)) {
+T1_DRIVE.drive(1,1,5*var_speed/4);
+T1_DRIVE.drive(2,0,var_speed/5);
+var_dir=30; }
+else {
+if(T1_LH(1,1,0)) {
+T1_DRIVE.drive(2,1,
+5*var_speed/4);
+T1_DRIVE.drive(1,1,
+var_speed/2);
+var_dir=-10;
+chart_Avoid(); }
+else
+{
+if(T1_LH(1,0,0)) {
+T1_DRIVE.drive(2,1,5*var_speed/4);
+T1_DRIVE.drive(1,0,var_speed/5);
+var_dir=-30; }
+else
+{
+if(T1_LH(-1,1,-1)) {
+T1_DRIVE.forwards(var_speed);
+var_dir=0;
+chart_Avoid();
+}
+}
+}
+}
+}
+}
+}
+}
+void chart_Correct() {
+var_count=0;
+l3:;
+if(var_dir>0) {
+T1_DRIVE.drive(2,1,var_speed);
+T1_DRIVE.drive(1,0,var_speed/3);
+}
+else
+{
+if(var_dir<0) {
+T1_DRIVE.drive(1,1,var_speed);
+T1_DRIVE.drive(2,0,var_speed/3);
+} }
+delay(1);
+var_count=var_count+1;
+if(var_count<1000) {
+if (T1_LH(1,1,1)) goto l3;
+}
+else
+{
+T1_DRIVE.stop();
+var_dir=0;
+}
+}
+void chart_Avoid() {
+if(T1_SH(var_range,0)) {
+T1_DRIVE.backwards(2*var_speed/3);
+delay(250);
+T1_DRIVE.turn(80);
+do {
+delay(5);
+}
+while ((!(T1_SH(1.5*var_range,0))) == false);
+T1_DRIVE.stop();
+delay(500);
+T1_DRIVE.turn(80);
+var_tstart=cpu.millis();
+while (!(T1_SH(1.5*var_range,0))) {
+}
+var_tstop=cpu.millis();
+var_count=(var_tstop-var_tstart)/10;
+T1_DRIVE.stop();
+delay(500);
+T1_DRIVE.turn(-80);
+while (var_count>0) {
+var_count=var_count-1;
+delay(5);
+}
+T1_DRIVE.backwards(2*var_speed/3);
+delay(300);
+T1_DRIVE.forwards(var_speed/2);
+}
+}
+// Entry Points and Interrupt Handlers
+void setup ()
+{
+peripheral_setup();
+chart_SETUP();
+}
+void loop ()
+{
+peripheral_loop();
+chart_LOOP();
