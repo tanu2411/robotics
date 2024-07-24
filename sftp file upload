@@ -1,0 +1,18 @@
+Aim: Using sftp upload files from PC.
+Step 1: Intsall the Raspberry Pi Imager
+Choose the Operating system,check the storage as Mass storage Device USB Device -15.9 GB
+Step 2: Set Host Name , enable SSH, Set Username and Password. choose for this session only ,add user name and password
+select user password authentication and click on set username and password,click on configure wireless LAN ,then click on save button
+Step 3: Set SSID and Password of hotspot which is used for example . add SSID as GalaxyM208FB, CHOOSE wlan country as india, 
+click checkbox of eject media when finished
+click checkbox of enable telemetry and then click on save  (the advanced option)
+select yes to  Mass storage Device USB Device and then click on continue
+connect raspberry pi wifi and laptop wifi to mobile device
+Step 5: Open CMD and tyepe following command
+I ) ping raspberrypi or ping 162.168.207.244
+II ssh admin@ raspberrypi or ssh admin@
+162.168.207.244 And type password of Admin
+Step:6 Download the FileZilla (Client)
+add host ip address and username and passworf on filezilla and click on Quick Connect
+select microsoft edge link
+
