@@ -32,4 +32,3 @@ else:
 GPIO.output(DC_motor_a, GPIO.LOW)
 GPIO.output(DC_motor_b, GPIO.HIGH)
 time.sleep(0.1)
-Start Simulation.
