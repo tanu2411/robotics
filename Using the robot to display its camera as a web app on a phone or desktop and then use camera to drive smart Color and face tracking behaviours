@@ -1,0 +1,29 @@
+Proteus Simulator 8.9 and above
+Lcd TFT
+Button
+Raspberry pi camera
+Procedure:
+First the components from the library and place it in the schematic chart
+Step 1:- Select new project from the tab , select flow chart project
+Step 2:- Create new folder and save the project by remaining as camera.psdrpj in proteus.
+Step 3:- Select a picture and place it in the resource file by right clicking on raspberry pi in
+the flowchart view
+
+Step 4: Once you click on add resource it will take you to project folder place a bit map image
+in it.
+Example shown here is the butterfiles.png
+Save it and then run the simulation once you run the simulation you will see the output as
+shown below :
+
+Step 6:
+Before doing the above process complete the flow chart :
+
+Step7: Once you click the button in the schematic view, we can see our image on the TFT LCD
+selected displaying your image please keep the camera of the laptop on in case desktop use the
+web camera.
+
+The camera will click the image and display the real time image on the TFT display as
+shown above
+Conclusion :
+Hence, we have studied the camera function and displayed it using the
+webapp.
